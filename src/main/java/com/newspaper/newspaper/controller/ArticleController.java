@@ -42,13 +42,6 @@ public class ArticleController {
     public ResponseEntity<Article> createArticle(@Valid @ModelAttribute Article article, @RequestParam MultipartFile file, @PathVariable int userId) throws IOException {
         return new ResponseEntity<>(articleService.createArticle(article, file, userId), HttpStatus.CREATED);
     }
-
-    /* @PostMapping("/image")
-    public ResponseEntity<?> createImage(@RequestParam("image") MultipartFile file) throws IOException {
-        String uploadImage = imageService.uploadImage(file);
-        return ResponseEntity.status(HttpStatus.OK).body(uploadImage);
-    } */
-    
     
     @GetMapping("/{id}")
     public ResponseEntity<Article> getArticleById(@PathVariable int id) {
