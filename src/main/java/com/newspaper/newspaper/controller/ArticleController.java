@@ -1,13 +1,17 @@
 package com.newspaper.newspaper.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.newspaper.newspaper.model.Article;
 import com.newspaper.newspaper.service.ArticleService;
+import com.newspaper.newspaper.service.ImageService;
 
 import jakarta.validation.Valid;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 
 
@@ -26,15 +31,24 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class ArticleController {
 
     ArticleService articleService;
+    ImageService imageService;
 
-    public ArticleController(ArticleService articleService){
+    public ArticleController(ArticleService articleService, ImageService imageService){
         this.articleService = articleService;
+        this.imageService = imageService;
     }
 
     @PostMapping("/user/{userId}")
-    public ResponseEntity<Article> createArticle(@Valid @RequestBody Article article, @PathVariable int userId) {
-        return new ResponseEntity<>(articleService.createArticle(article, userId), HttpStatus.CREATED);
+    public ResponseEntity<Article> createArticle(@Valid @ModelAttribute Article article, @RequestParam MultipartFile file, @PathVariable int userId) throws IOException {
+        return new ResponseEntity<>(articleService.createArticle(article, file, userId), HttpStatus.CREATED);
     }
+
+    /* @PostMapping("/image")
+    public ResponseEntity<?> createImage(@RequestParam("image") MultipartFile file) throws IOException {
+        String uploadImage = imageService.uploadImage(file);
+        return ResponseEntity.status(HttpStatus.OK).body(uploadImage);
+    } */
+    
     
     @GetMapping("/{id}")
     public ResponseEntity<Article> getArticleById(@PathVariable int id) {
