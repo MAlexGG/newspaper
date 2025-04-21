@@ -41,6 +41,25 @@ public class ImageService {
         return null;
     }
 
+    public void deleteImage(int imageId) {
+        Optional<Image> optionalImage = imageRepository.findById(imageId);
+        if (optionalImage.isPresent()) {
+            Image image = optionalImage.get();
+            Path path = Paths.get(image.getPath());
+            try {
+                if (Files.exists(path)) {
+                    Files.delete(path);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("No se pudo eliminar el archivo: " + path, e);
+            }
+            imageRepository.deleteById(imageId);
+        } else {
+            throw new RuntimeException("La imagen con ID " + imageId + " no existe");
+        }
+    }
+    
+
     public Image getImage(int id){
         Optional<Image> image = imageRepository.findById(id);
         return unwrapImage(image);

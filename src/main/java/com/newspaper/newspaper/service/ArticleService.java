@@ -60,11 +60,20 @@ public class ArticleService {
         return (unwrapArticle(article).getTitle() + " deleted successfully");
     }
 
-    public Article updateArticle(int id, Article newArticle){
+    public Article updateArticle(int id, Article newArticle, MultipartFile file){
         Article article = getArticleById(id);
         article.setTitle(newArticle.getTitle());
         article.setContent(newArticle.getContent());
         article.setCategory(newArticle.getCategory());
+        if(!file.isEmpty()){
+            try {
+                imageService.deleteImage(article.getImage().getId());
+                Image uploadedImage = imageService.uploadImage(file);
+                article.setImage(uploadedImage);
+             } catch (IOException e) {
+                 throw new RuntimeException("Error uploading image", e);
+             }
+        }
         return articleRepository.save(article);
     }
 
