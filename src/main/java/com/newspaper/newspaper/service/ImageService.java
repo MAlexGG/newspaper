@@ -23,7 +23,7 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
-    public Image uploadImage (MultipartFile file) throws IOException {
+    public Image uploadImage(MultipartFile file) throws IOException {
         Files.createDirectories(Paths.get("uploads/"));
         Path path = Paths.get("uploads/" + file.getOriginalFilename());
         Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
@@ -42,21 +42,16 @@ public class ImageService {
     }
 
     public void deleteImage(int imageId) {
-        Optional<Image> optionalImage = imageRepository.findById(imageId);
-        if (optionalImage.isPresent()) {
-            Image image = optionalImage.get();
-            Path path = Paths.get(image.getPath());
-            try {
-                if (Files.exists(path)) {
-                    Files.delete(path);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException("No se pudo eliminar el archivo: " + path, e);
+        Image image = getImage(imageId);
+        Path path = Paths.get(image.getPath());
+        try {
+            if (Files.exists(path)) {
+                Files.delete(path);
             }
-            imageRepository.deleteById(imageId);
-        } else {
-            throw new RuntimeException("La imagen con ID " + imageId + " no existe");
+        } catch (IOException e) {
+            throw new RuntimeException("No se pudo eliminar el archivo: " + path, e);
         }
+        imageRepository.deleteById(imageId); 
     }
     
 

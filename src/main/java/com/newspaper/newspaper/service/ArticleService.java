@@ -56,8 +56,10 @@ public class ArticleService {
     public String deleteArticle(int id){
         Optional<Article> article = articleRepository.findById(id);
         if(article.isEmpty()) return "Article does not exist";
+        Article unwrapArticle = unwrapArticle(article);
+        imageService.deleteImage(unwrapArticle.getImage().getId());
         articleRepository.deleteById(id);
-        return (unwrapArticle(article).getTitle() + " deleted successfully");
+        return (unwrapArticle.getTitle() + " deleted successfully");
     }
 
     public Article updateArticle(int id, Article newArticle, MultipartFile file){

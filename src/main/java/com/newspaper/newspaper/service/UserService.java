@@ -31,7 +31,7 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()) return "User does not exist";
         userRepository.deleteById(id);
-        return ( unwrapUser(user).getName() + " deleted successfully");
+        return (unwrapUser(user).getName() + " deleted successfully");
     }
 
     public static User unwrapUser(Optional<User> entity){
