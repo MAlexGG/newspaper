@@ -79,6 +79,11 @@ public class ArticleService {
         return articleRepository.save(article);
     }
 
+    public List<Article> getArticlesByAuthorName(String name){
+        List<Article> articles = articleRepository.findByAuthorName(name);
+        return articles;
+    }
+
 
     public static Article unwrapArticle(Optional<Article> entity){
         if(entity.isPresent()) return entity.get();

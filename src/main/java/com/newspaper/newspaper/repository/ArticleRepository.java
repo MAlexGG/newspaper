@@ -9,4 +9,6 @@ import com.newspaper.newspaper.model.User;
 
 public interface ArticleRepository extends JpaRepository<Article, Integer>{
     List<Article> findByAuthor(User author);
+    List<Article> findByAuthorName(String name);
+   
 }

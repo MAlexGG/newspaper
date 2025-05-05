@@ -62,4 +62,9 @@ public class ArticleController {
         return new ResponseEntity<>(articleService.updateArticle(id,article, file), HttpStatus.OK);
     }
 
+    @GetMapping("/all/username/{name}")
+    public ResponseEntity<List<Article>> getArticlesByUserName(@PathVariable String name) {
+        return new ResponseEntity<>(articleService.getArticlesByAuthorName(name), HttpStatus.OK);
+    }
+
 }
