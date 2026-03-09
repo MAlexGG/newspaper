@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,12 +42,7 @@ public class ImageService {
     }
 
     public Image getImage(int id){
-        Optional<Image> image = imageRepository.findById(id);
-        return unwrapImage(image);
-    }
-
-    public static Image unwrapImage(Optional<Image> entity){
-        if(entity.isPresent()) return entity.get();
-        else throw new EntityNotFoundException(Image.class);
+        Image image = imageRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Image.class)) ;
+        return image;
     }
 }
